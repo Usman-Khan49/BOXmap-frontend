@@ -2,8 +2,8 @@ import '../../styles/loadingScreen.css'
 import inboxSvg from '../../assets/inbox.svg'
 
 type HoneyCombProps = {
-    imageUrl?: string
-    alt?: string
+    imageUrl: string
+    alt: string
 }
 
 export function HoneyComb({ imageUrl = inboxSvg, alt = 'Honeycomb icon' }: HoneyCombProps) {
