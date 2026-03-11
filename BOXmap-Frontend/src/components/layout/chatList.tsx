@@ -1,7 +1,9 @@
 import "../../styles/chatList.css"
 import { useState } from "react"
 import type { ConversationItem } from "../../types/inbox"
-import profileIcon from "../../assets/profileIcon.png"
+import minimizeIcon from "../../assets/minimize-icon.svg"
+import editIcon from "../../assets/edit-icon.svg"
+import filterSearchIcon from "../../assets/filter-search-icon.png"
 
 const conversations: ConversationItem[] = [
     { id: 1, name: "Olivia Mckinsey", initial: "O", avatarColor: "#F5A623", lastMessage: "Oh my god 😍 I'll try it ASAP, thank..", time: "23:23" },
@@ -22,35 +24,21 @@ export default function ChatList() {
         <div className="ChatList-container">
             <div className="ChatList-header">
                 <div className="ChatList-header-left">
-                    
+                    <img src={minimizeIcon} alt="minimize icon" className="ChatList-minimize-icon" />
                     <div className="ChatList-profile">
-                        <img src={profileIcon} alt="profile" className="ChatList-profile-img" />
                         <span className="ChatList-profile-name">Michael Johnson</span>
                     </div>
                 </div>
-                <svg className="ChatList-compose" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 20h9" />
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                </svg>
+                <img src={editIcon} alt="edit icon" className="ChatList-compose" />
             </div>
 
             <div className="ChatList-search">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="11" cy="11" r="8" />
                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
                 <input type="text" placeholder="Search Chat" className="ChatList-search-input" />
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="4" y1="21" x2="4" y2="14" />
-                    <line x1="4" y1="10" x2="4" y2="3" />
-                    <line x1="12" y1="21" x2="12" y2="12" />
-                    <line x1="12" y1="8" x2="12" y2="3" />
-                    <line x1="20" y1="21" x2="20" y2="16" />
-                    <line x1="20" y1="12" x2="20" y2="3" />
-                    <line x1="1" y1="14" x2="7" y2="14" />
-                    <line x1="9" y1="8" x2="15" y2="8" />
-                    <line x1="17" y1="16" x2="23" y2="16" />
-                </svg>
+                <img src={filterSearchIcon} alt="filter search icon" className="ChatList-filter-search-icon" />
             </div>
 
             <div className="ChatList-filters">

@@ -1,5 +1,6 @@
 import "../../styles/detailsPanel.css"
 import { useState } from "react"
+import assignedUserIcon from "../../assets/assigned-user-icon.png"
 
 export default function DetailsPanel() {
     const [chatDataOpen, setChatDataOpen] = useState(true)
@@ -35,29 +36,17 @@ export default function DetailsPanel() {
                         <div className="Details-row">
                             <span className="Details-label">Assignee</span>
                             <div className="Details-value-row">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                    <circle cx="12" cy="7" r="4" />
-                                </svg>
+                                <img src={assignedUserIcon} alt="assigned user icon" className="Details-assigned-icon" />
                                 <span className="Details-value">James West</span>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="6 9 12 15 18 9" />
-                                </svg>
+                                
                             </div>
                         </div>
                         <div className="Details-row">
                             <span className="Details-label">Team</span>
                             <div className="Details-value-row">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                    <circle cx="9" cy="7" r="4" />
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                </svg>
+                                <img src={assignedUserIcon} alt="assigned user icon" className="Details-assigned-icon" />
                                 <span className="Details-value">Sales Team</span>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="6 9 12 15 18 9" />
-                                </svg>
+                                
                             </div>
                         </div>
                     </div>
@@ -74,19 +63,19 @@ export default function DetailsPanel() {
                 </div>
                 {contactDataOpen && (
                     <div className="Details-section-content">
-                        <div className="Details-field">
+                        <div className="Details-field Details-field-inline">
                             <span className="Details-field-label">First Name</span>
                             <span className="Details-field-value">Olivia</span>
                         </div>
-                        <div className="Details-field">
+                        <div className="Details-field Details-field-inline">
                             <span className="Details-field-label">Last Name</span>
                             <span className="Details-field-value">Mckinsey</span>
                         </div>
-                        <div className="Details-field">
+                        <div className="Details-field Details-field-inline">
                             <span className="Details-field-label">Phone number</span>
                             <span className="Details-field-value">+1 (312) 555-0134</span>
                         </div>
-                        <div className="Details-field">
+                        <div className="Details-field Details-field-inline">
                             <span className="Details-field-label">Email</span>
                             <span className="Details-field-value">olivia.Mckinsey@gmail.com</span>
                         </div>

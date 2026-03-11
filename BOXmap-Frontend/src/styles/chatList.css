@@ -18,6 +18,12 @@
     gap: 10px;
 }
 
+.ChatList-minimize-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
 .ChatList-profile {
     display: flex;
     align-items: center;
@@ -38,6 +44,9 @@
 }
 
 .ChatList-compose {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 150ms;
@@ -49,12 +58,18 @@
 .ChatList-search {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin: 0 14px 10px;
-    padding: 8px 12px;
-    background: #F5F5F5;
-    border-radius: 10px;
-    border: 1px solid #E8E8E8;
+    gap: 6px;
+    margin: 0 0 10px;
+    padding: 6px 10px;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+.ChatList-filter-search-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
 }
 
 .ChatList-search-input {
@@ -94,46 +109,57 @@
 .ChatList-conversations {
     flex: 1;
     overflow-y: auto;
+    margin-inline: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .ChatList-conversations::-webkit-scrollbar {
-    width: 4px;
-}
-.ChatList-conversations::-webkit-scrollbar-thumb {
-    background: #D8DEE4;
-    border-radius: 4px;
+    display: none;
 }
 
 .ChatList-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
     padding: 12px 16px;
     cursor: pointer;
     transition: background 150ms;
     border-bottom: 1px solid #F0F0F0;
+    margin-bottom: 8px;
+    background-color: #fff;
 }
 
 .ChatList-item:hover {
-    background-color: #FAFAFA;
+    background-color: #FAFAF9;
 }
 
 .ChatList-item.selected {
-    background-color: #FFF8E1;
+    border-bottom: 1px solid #FAFAF9;
+
 }
 
 .ChatList-avatar {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     font-family: var(--font-tertiary);
+    justify-self: center;
+}
+
+.ChatList-avatar-icon {
+    width: 14px;
+    height: 14px;
+    margin-top: 3px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .ChatList-item-content {

@@ -1,5 +1,10 @@
 import "../../styles/inboxSidebar.css"
 import { useState } from "react"
+import teamsIcon from "../../assets/teams-icon.png"
+import singleProfileIcon from "../../assets/single-profile-icon.png"
+import peopleProfileIcon from "../../assets/people-profile-icon.png"
+import assignedUserIcon from "../../assets/assigned-user-icon.png"
+import userIcon from "../../assets/user-icon.png"
 
 export default function InboxSidebar() {
     const [teamsOpen, setTeamsOpen] = useState(true)
@@ -32,29 +37,20 @@ export default function InboxSidebar() {
             <div className="Sidebar-menu">
                 <div className="Sidebar-menu-item">
                     <div className="Sidebar-menu-left">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                            <circle cx="12" cy="7" r="4" />
-                        </svg>
+                        <img src={singleProfileIcon} alt="my inbox icon" className="Sidebar-icon" />
                         <span>My Inbox</span>
                     </div>
                 </div>
                 <div className="Sidebar-menu-item">
                     <div className="Sidebar-menu-left">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
-                            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
-                        </svg>
+                        <img src={peopleProfileIcon} alt="all icon" className="Sidebar-icon" />
                         <span>All</span>
                     </div>
                     <span className="Sidebar-badge">28</span>
                 </div>
                 <div className="Sidebar-menu-item">
                     <div className="Sidebar-menu-left">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
-                            <path d="M9 12h6" />
-                        </svg>
+                        <img src={assignedUserIcon} alt="unassigned icon" className="Sidebar-icon" />
                         <span>Unassigned</span>
                     </div>
                     <span className="Sidebar-badge">5</span>
@@ -63,7 +59,9 @@ export default function InboxSidebar() {
 
             <div className="Sidebar-section">
                 <div className="Sidebar-section-header" onClick={() => setTeamsOpen(!teamsOpen)}>
-                    <span className="Sidebar-section-title">Teams</span>
+                    <div className="Sidebar-section-title-wrap">
+                        <span className="Sidebar-section-title">Teams</span>
+                    </div>
                     <svg className={`Sidebar-chevron ${teamsOpen ? "open" : ""}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="9 18 15 12 9 6" />
                     </svg>
@@ -72,24 +70,14 @@ export default function InboxSidebar() {
                     <div className="Sidebar-section-items">
                         <div className="Sidebar-menu-item">
                             <div className="Sidebar-menu-left">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                    <circle cx="9" cy="7" r="4" />
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                </svg>
+                                <img src={teamsIcon} alt="sales team icon" className="Sidebar-icon" />
                                 <span>Sales</span>
                             </div>
                             <span className="Sidebar-badge">7</span>
                         </div>
                         <div className="Sidebar-menu-item">
                             <div className="Sidebar-menu-left">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                    <circle cx="9" cy="7" r="4" />
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                </svg>
+                                <img src={teamsIcon} alt="customer support team icon" className="Sidebar-icon" />
                                 <span>Customer Support</span>
                             </div>
                             <span className="Sidebar-badge">16</span>
@@ -114,7 +102,7 @@ export default function InboxSidebar() {
                                 onClick={() => setSelectedUser(user.name)}
                             >
                                 <div className="Sidebar-menu-left">
-                                    <span className="Sidebar-user-dot"></span>
+                                    <img src={userIcon} alt="user icon" className="Sidebar-icon" />
                                     <span>{user.name}</span>
                                 </div>
                                 {user.count !== undefined && (
