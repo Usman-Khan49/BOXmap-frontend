@@ -1,17 +1,22 @@
 import "../../styles/chatWindow.css"
+import { useState, useEffect } from "react"
+import Skeleton from "react-loading-skeleton"
 import type { Message } from "../../types/inbox"
 import dndIcon from "../../assets/dnd-icon.svg"
 import archiveIcon from "../../assets/archive-icon.svg"
+import { fetchComments, fetchUsers } from "../../services/api/inbox"
+import type { JPComment, JPUser } from "../../services/api/inbox"
 
-const messages: Message[] = [
-    { id: 1, sender: "customer", text: "Hi, I recently joined Fit4Life and I'm trying to access my workout plan, but I can't login. Can you help?", time: "23:08" },
-    { id: 2, sender: "agent", text: "Hello Olivia 👋 I'm Michael, your AI customer support assistant. Let's fix this quickly. Could you confirm the email address?", time: "23:08", delivered: true },
-    { id: 3, sender: "customer", text: "Yes, it's olivia.Mckinsey@gmail.com", time: "23:16" },
-    { id: 4, sender: "agent", text: "Thanks! Looks like your reset wasn't completed. I've sent a new link - please check your inbox.", time: "23:16", delivered: true },
-    { id: 5, sender: "customer", text: "I see it. resetting now...", time: "23:17" },
-    { id: 6, sender: "customer", text: "Done! I'm logged in. Thanks!", time: "23:20" },
-    { id: 7, sender: "agent", text: "Perfect 🎉 Your plan is ready under \"My Programs\". Since you're starting out, I suggest our Premium Guide - it boosts results and is 20% off here 👉\nwww.Fit4Life.com/Premium", time: "23:20", delivered: true },
-    { id: 8, sender: "customer", text: "Oh my god 😍 I'll try it ASAP, thank you so much!!", time: "23:23" },
+const FAKE_TIMES = ['23:08', '23:10', '23:16', '23:18', '23:20', '23:21', '23:22', '23:23']
+const ENGLISH_MESSAGES = [
+    "Hi, I recently signed up and I'm having trouble accessing my account. Can you help me out?",
+    "Hello! I'm happy to assist. Could you please confirm the email address linked to your account?",
+    "Sure, it's the one I used during registration. I also tried resetting the password but didn't get an email.",
+    "Got it! I've resent the password reset link — please check your inbox and spam folder.",
+    "I found it, resetting now... done! I'm in, thank you!",
+    "Great to hear! 🎉 While you're here, have you checked out our latest features under the Dashboard section?",
+    "Not yet — I'll take a look now. Is there a guide or tutorial available?",
+    "Yes! Head to Help Center → Getting Started. It covers everything step by step. Let us know if you need anything else!",
 ]
 
 function CheckmarkIcon() {
@@ -23,11 +28,36 @@ function CheckmarkIcon() {
     )
 }
 
-export default function ChatWindow() {
+export default function ChatWindow({ loadStep }: { loadStep: number }) {
+    const [messages, setMessages] = useState<Message[]>([])
+    const [contactName, setContactName] = useState('')
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (loadStep < 3) return
+        Promise.all([fetchComments(1, 8), fetchUsers()])
+            .then(([comments, users]: [JPComment[], JPUser[]]) => {
+                setContactName(users[0]?.name ?? 'Contact')
+                const mapped: Message[] = comments.map((c, idx) => ({
+                    id: c.id,
+                    sender: (idx % 2 === 0 ? 'customer' : 'agent') as 'customer' | 'agent',
+                    text: ENGLISH_MESSAGES[idx] ?? 'Thanks for reaching out!',
+                    time: FAKE_TIMES[idx] ?? '12:00',
+                    delivered: idx % 2 !== 0,
+                }))
+                setMessages(mapped)
+            })
+            .catch(() => {})
+            .finally(() => setLoading(false))
+    }, [loadStep])
+
     return (
         <div className="ChatWindow-container">
             <div className="ChatWindow-header">
-                <h3 className="ChatWindow-contact-name">Olivia Mckinsey</h3>
+                {loading
+                    ? <Skeleton width={140} height={13} />
+                    : <h3 className="ChatWindow-contact-name">{contactName}</h3>
+                }
                 <div className="ChatWindow-header-actions">
                     <button className="ChatWindow-action-btn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -46,18 +76,31 @@ export default function ChatWindow() {
             </div>
 
             <div className="ChatWindow-messages">
-                <div className="ChatWindow-date-pill">28 August 2025</div>
-                {messages.map((msg) => (
-                    <div key={msg.id} className={`ChatWindow-msg ${msg.sender}`}>
-                        <div className="ChatWindow-msg-bubble">
-                            <p className="ChatWindow-msg-text">{msg.text}</p>
+                {loading
+                    ? Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className={`ChatWindow-msg ${i % 2 === 0 ? 'customer' : 'agent'}`}>
+                            <Skeleton
+                                width={i % 2 === 0 ? 220 : 180}
+                                height={48}
+                                borderRadius={14}
+                            />
                         </div>
-                        <div className="ChatWindow-msg-meta">
-                            {msg.delivered && <CheckmarkIcon />}
-                            <span className="ChatWindow-msg-time">{msg.time}</span>
-                        </div>
-                    </div>
-                ))}
+                    ))
+                    : <>
+                        <div className="ChatWindow-date-pill">28 August 2025</div>
+                        {messages.map(msg => (
+                            <div key={msg.id} className={`ChatWindow-msg ${msg.sender}`}>
+                                <div className="ChatWindow-msg-bubble">
+                                    <p className="ChatWindow-msg-text">{msg.text}</p>
+                                </div>
+                                <div className="ChatWindow-msg-meta">
+                                    {msg.delivered && <CheckmarkIcon />}
+                                    <span className="ChatWindow-msg-time">{msg.time}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </>
+                }
             </div>
 
             <div className="ChatWindow-input-area">

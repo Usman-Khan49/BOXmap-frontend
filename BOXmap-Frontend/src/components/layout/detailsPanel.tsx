@@ -1,13 +1,29 @@
 import "../../styles/detailsPanel.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Skeleton from "react-loading-skeleton"
 import assignedUserIcon from "../../assets/assigned-user-icon.png"
+import { fetchUser } from "../../services/api/inbox"
+import type { JPUser } from "../../services/api/inbox"
 
-export default function DetailsPanel() {
+export default function DetailsPanel({ loadStep }: { loadStep: number }) {
     const [chatDataOpen, setChatDataOpen] = useState(true)
     const [contactDataOpen, setContactDataOpen] = useState(true)
     const [labelsOpen, setLabelsOpen] = useState(true)
     const [notesOpen, setNotesOpen] = useState(true)
     const [otherChatsOpen, setOtherChatsOpen] = useState(true)
+    const [user, setUser] = useState<JPUser | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (loadStep < 4) return
+        fetchUser(1)
+            .then(data => setUser(data))
+            .catch(() => {})
+            .finally(() => setLoading(false))
+    }, [loadStep])
+
+    const firstName = user?.name.split(' ')[0] ?? ''
+    const lastName = user?.name.split(' ').slice(1).join(' ') ?? ''
 
     return (
         <div className="Details-container">
@@ -36,17 +52,23 @@ export default function DetailsPanel() {
                         <div className="Details-row">
                             <span className="Details-label">Assignee</span>
                             <div className="Details-value-row">
-                                <img src={assignedUserIcon} alt="assigned user icon" className="Details-assigned-icon" />
-                                <span className="Details-value">James West</span>
-                                
+                                {loading ? <Skeleton width={100} height={12} /> : (
+                                    <>
+                                        <img src={assignedUserIcon} alt="assigned user icon" className="Details-assigned-icon" />
+                                        <span className="Details-value">{user?.company.name ?? 'James West'}</span>
+                                    </>
+                                )}
                             </div>
                         </div>
                         <div className="Details-row">
                             <span className="Details-label">Team</span>
                             <div className="Details-value-row">
-                                <img src={assignedUserIcon} alt="assigned user icon" className="Details-assigned-icon" />
-                                <span className="Details-value">Sales Team</span>
-                                
+                                {loading ? <Skeleton width={90} height={12} /> : (
+                                    <>
+                                        <img src={assignedUserIcon} alt="assigned user icon" className="Details-assigned-icon" />
+                                        <span className="Details-value">Sales Team</span>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -63,29 +85,40 @@ export default function DetailsPanel() {
                 </div>
                 {contactDataOpen && (
                     <div className="Details-section-content">
-                        <div className="Details-field Details-field-inline">
-                            <span className="Details-field-label">First Name</span>
-                            <span className="Details-field-value">Olivia</span>
-                        </div>
-                        <div className="Details-field Details-field-inline">
-                            <span className="Details-field-label">Last Name</span>
-                            <span className="Details-field-value">Mckinsey</span>
-                        </div>
-                        <div className="Details-field Details-field-inline">
-                            <span className="Details-field-label">Phone number</span>
-                            <span className="Details-field-value">+1 (312) 555-0134</span>
-                        </div>
-                        <div className="Details-field Details-field-inline">
-                            <span className="Details-field-label">Email</span>
-                            <span className="Details-field-value">olivia.Mckinsey@gmail.com</span>
-                        </div>
+                        {loading ? (
+                            <>
+                                <Skeleton width="90%" height={12} />
+                                <Skeleton width="80%" height={12} />
+                                <Skeleton width="85%" height={12} />
+                                <Skeleton width="90%" height={12} />
+                            </>
+                        ) : (
+                            <>
+                                <div className="Details-field Details-field-inline">
+                                    <span className="Details-field-label">First Name</span>
+                                    <span className="Details-field-value">{firstName}</span>
+                                </div>
+                                <div className="Details-field Details-field-inline">
+                                    <span className="Details-field-label">Last Name</span>
+                                    <span className="Details-field-value">{lastName}</span>
+                                </div>
+                                <div className="Details-field Details-field-inline">
+                                    <span className="Details-field-label">Phone number</span>
+                                    <span className="Details-field-value">{user?.phone}</span>
+                                </div>
+                                <div className="Details-field Details-field-inline">
+                                    <span className="Details-field-label">Email</span>
+                                    <span className="Details-field-value">{user?.email}</span>
+                                </div>
+                            </>
+                        )}
                         <span className="Details-see-all">See all</span>
                     </div>
                 )}
             </div>
 
             {/* Contact Labels Section */}
-            <div className="Details-section">
+            {loadStep >= 5 && <div className="Details-section">
                 <div className="Details-section-header" onClick={() => setLabelsOpen(!labelsOpen)}>
                     <span className="Details-section-title">Contact Labels</span>
                     <svg className={`Details-chevron ${labelsOpen ? "open" : ""}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -116,10 +149,10 @@ export default function DetailsPanel() {
                         </div>
                     </div>
                 )}
-            </div>
+            </div>}
 
             {/* Notes Section */}
-            <div className="Details-section">
+            {loadStep >= 5 && <div className="Details-section">
                 <div className="Details-section-header" onClick={() => setNotesOpen(!notesOpen)}>
                     <span className="Details-section-title">Notes</span>
                     <svg className={`Details-chevron ${notesOpen ? "open" : ""}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -134,7 +167,7 @@ export default function DetailsPanel() {
                         </div>
                     </div>
                 )}
-            </div>
+            </div>}
 
             {/* Other Chats Section */}
             <div className="Details-section">

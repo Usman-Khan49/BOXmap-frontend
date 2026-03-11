@@ -42,25 +42,25 @@
     font-weight: 700;
     line-height: 100%;
     color:#007AEC;
-    font-size: 18px;
-    margin-right: 20px;
+    font-size: 14px;
+    margin-right: 16px;
 }
 .nav-item-tile
 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 12px;
     line-height:100%;
-    padding:5px 7px;
+    padding: 4px 6px;
 
 }
 .nav-item-tile > img 
 {
-    width: 14.04px;
-    height: 14.04px;
+    width: 11px;
+    height: 11px;
     color: #000000;
     filter: brightness(0);
 }
@@ -70,10 +70,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     font-family:'SF-Compact', serif;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 100%;
 }
 
@@ -106,8 +106,8 @@
 
 .Users-list
 {
-    width: 210px;
-    min-width: 210px;
+    width: 178px;
+    min-width: 178px;
     background: #FFFFFF;
     border-right: 1px solid #E4E6E8;
     box-shadow: inset -6px 0 10px -10px rgba(0, 0, 0, 0.22);
@@ -116,8 +116,8 @@
 
 .Users-message
 {
-    width: 280px;
-    min-width: 280px;
+    width: 270px;
+    min-width: 270px;
     background: #FAFAF9;
     box-shadow:
         inset 6px 0 10px -10px rgba(0, 0, 0, 0.16),
@@ -136,8 +136,8 @@
 
 .Chat-info
 {
-    width: 310px;
-    min-width: 310px;
+    width: 290px;
+    min-width: 290px;
     background: #FFFFFF;
     border-radius: 12px;
     overflow: hidden;

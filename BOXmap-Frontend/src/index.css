@@ -52,6 +52,7 @@ body {
     padding: 0;
     box-sizing: border-box;
 	font-family: var(--font-primary);
+    background: linear-gradient(to right, #0c1539, #02153A);
 }
 
 .font-primary {

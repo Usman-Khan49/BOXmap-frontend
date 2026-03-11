@@ -1,37 +1,45 @@
 import "../../styles/inboxSidebar.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Skeleton from "react-loading-skeleton"
 import teamsIcon from "../../assets/teams-icon.png"
 import singleProfileIcon from "../../assets/single-profile-icon.png"
 import peopleProfileIcon from "../../assets/people-profile-icon.png"
 import assignedUserIcon from "../../assets/assigned-user-icon.png"
 import userIcon from "../../assets/user-icon.png"
+import { fetchUsers } from "../../services/api/inbox"
+import type { JPUser } from "../../services/api/inbox"
 
-export default function InboxSidebar() {
+function getBadge(user: JPUser): number | undefined {
+    const val = (user.id * 7) % 15
+    return val <= 1 ? undefined : val
+}
+
+export default function InboxSidebar({ loadStep }: { loadStep: number }) {
     const [teamsOpen, setTeamsOpen] = useState(true)
     const [usersOpen, setUsersOpen] = useState(true)
     const [channelsOpen, setChannelsOpen] = useState(true)
-    const [selectedUser, setSelectedUser] = useState("Michael Johnson")
+    const [selectedUser, setSelectedUser] = useState<string | null>(null)
+    const [users, setUsers] = useState<JPUser[]>([])
+    const [loading, setLoading] = useState(true)
 
-    const users = [
-        { name: "Sarah Williams", count: 2 },
-        { name: "Michael Johnson", count: 11 },
-        { name: "Emily Davis", count: undefined },
-        { name: "Christopher Miller", count: 4 },
-        { name: "Amanda Garcia", count: 5 },
-        { name: "Joshua Martinez", count: undefined },
-        { name: "Ashley Taylor", count: 1 },
-        { name: "Daniel Anderson", count: undefined },
-        { name: "Jessica Thomas", count: 2 },
-    ]
+    useEffect(() => {
+        if (loadStep < 1) return
+        fetchUsers()
+            .then(data => {
+                const sliced = data.slice(0, 9)
+                setUsers(sliced)
+                setSelectedUser(sliced[1]?.name ?? null)
+            })
+            .catch(() => {})
+            .finally(() => setLoading(false))
+    }, [loadStep])
 
     return (
         <div className="Sidebar-container">
             <div className="Sidebar-header">
                 <div className="Sidebar-header-left">
-                    
                     <h3 className="Sidebar-title">Inbox</h3>
                 </div>
-                
             </div>
 
             <div className="Sidebar-menu">
@@ -95,21 +103,32 @@ export default function InboxSidebar() {
                 </div>
                 {usersOpen && (
                     <div className="Sidebar-section-items">
-                        {users.map((user) => (
-                            <div
-                                key={user.name}
-                                className={`Sidebar-menu-item Sidebar-user-item ${selectedUser === user.name ? "active" : ""}`}
-                                onClick={() => setSelectedUser(user.name)}
-                            >
-                                <div className="Sidebar-menu-left">
-                                    <img src={userIcon} alt="user icon" className="Sidebar-icon" />
-                                    <span>{user.name}</span>
+                        {loading
+                            ? Array.from({ length: 9 }).map((_, i) => (
+                                <div key={i} className="Sidebar-menu-item">
+                                    <div className="Sidebar-menu-left">
+                                        <Skeleton circle width={11} height={11} />
+                                        <Skeleton width={85} height={11} style={{ marginLeft: 8 }} />
+                                    </div>
+                                    <Skeleton width={18} height={11} />
                                 </div>
-                                {user.count !== undefined && (
-                                    <span className="Sidebar-badge">{user.count}</span>
-                                )}
-                            </div>
-                        ))}
+                            ))
+                            : users.map(user => (
+                                <div
+                                    key={user.id}
+                                    className={`Sidebar-menu-item Sidebar-user-item ${selectedUser === user.name ? "active" : ""}`}
+                                    onClick={() => setSelectedUser(user.name)}
+                                >
+                                    <div className="Sidebar-menu-left">
+                                        <img src={userIcon} alt="user icon" className="Sidebar-icon" />
+                                        <span>{user.name}</span>
+                                    </div>
+                                    {getBadge(user) !== undefined && (
+                                        <span className="Sidebar-badge">{getBadge(user)}</span>
+                                    )}
+                                </div>
+                            ))
+                        }
                     </div>
                 )}
             </div>

@@ -1,24 +1,49 @@
 import "../../styles/chatList.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Skeleton from "react-loading-skeleton"
 import type { ConversationItem } from "../../types/inbox"
 import minimizeIcon from "../../assets/minimize-icon.svg"
 import editIcon from "../../assets/edit-icon.svg"
 import filterSearchIcon from "../../assets/filter-search-icon.png"
+import { fetchUsers } from "../../services/api/inbox"
+import type { JPUser } from "../../services/api/inbox"
 
-const conversations: ConversationItem[] = [
-    { id: 1, name: "Olivia Mckinsey", initial: "O", avatarColor: "#F5A623", lastMessage: "Oh my god 😍 I'll try it ASAP, thank..", time: "23:23" },
-    { id: 2, name: "Sara Williams", initial: "E", avatarColor: "#4CAF50", lastMessage: "Good Evening, Emily! Hope you are..", time: "23:16" },
-    { id: 3, name: "Frank Thompson", initial: "F", avatarColor: "#2196F3", lastMessage: "Thank you for signing up Frank! If t..", time: "22:28" },
-    { id: 4, name: "Grace Lee", initial: "G", avatarColor: "#66BB6A", lastMessage: "I am sending you the report right a..", time: "20:43" },
-    { id: 5, name: "Henry Adams", initial: "H", avatarColor: "#FFC107", lastMessage: "Thank you for filling out our survey!", time: "17:37" },
-    { id: 6, name: "Isabella Martinez", initial: "I", avatarColor: "#9C27B0", lastMessage: "I will update you soon Isabella!", time: "16:01" },
-    { id: 7, name: "James Brown", initial: "J", avatarColor: "#009688", lastMessage: "Hello James! Let's collaborate on..", time: "13:44" },
-    { id: 8, name: "Katherine White", initial: "K", avatarColor: "#E91E63", lastMessage: "Hi Katherine, looking forward to our..", time: "09:02" },
-    { id: 9, name: "Lucas Green", initial: "L", avatarColor: "#8BC34A", lastMessage: "Hey Lucas! Ready for the holiday...", time: "Yesterday" },
+const AVATAR_COLORS = ['#F5A623', '#4CAF50', '#2196F3', '#66BB6A', '#FFC107', '#9C27B0', '#009688', '#E91E63', '#8BC34A']
+const FAKE_TIMES = ['23:23', '23:16', '22:28', '20:43', '17:37', '16:01', '13:44', '09:02', 'Yesterday']
+const ENGLISH_PREVIEWS = [
+    "Oh my god 😍 I'll try it ASAP, thank you!",
+    "Good evening! Hope you are doing well.",
+    "Thank you for signing up! Let us know if..",
+    "I am sending you the report right now.",
+    "Thank you for filling out our survey!",
+    "I will update you soon, talk later!",
+    "Hello! Let's collaborate on the project.",
+    "Hi, looking forward to our meeting today.",
+    "Hey! Ready for the upcoming holiday sale?",
 ]
 
-export default function ChatList() {
+export default function ChatList({ loadStep }: { loadStep: number }) {
     const [selectedId, setSelectedId] = useState(1)
+    const [conversations, setConversations] = useState<ConversationItem[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (loadStep < 2) return
+        fetchUsers()
+            .then((users: JPUser[]) => {
+                const mapped: ConversationItem[] = users.slice(0, 9).map((user, idx) => ({
+                    id: user.id,
+                    name: user.name,
+                    initial: user.name[0].toUpperCase(),
+                    avatarColor: AVATAR_COLORS[idx % AVATAR_COLORS.length],
+                    lastMessage: ENGLISH_PREVIEWS[idx] ?? 'Hey, just checking in!',
+                    time: FAKE_TIMES[idx] ?? 'Earlier',
+                }))
+                setConversations(mapped)
+            })
+            .catch(() => {})
+            .finally(() => setLoading(false))
+    }, [loadStep])
 
     return (
         <div className="ChatList-container">
@@ -26,7 +51,10 @@ export default function ChatList() {
                 <div className="ChatList-header-left">
                     <img src={minimizeIcon} alt="minimize icon" className="ChatList-minimize-icon" />
                     <div className="ChatList-profile">
-                        <span className="ChatList-profile-name">Michael Johnson</span>
+                        {loading
+                            ? <Skeleton width={100} height={14} />
+                            : <span className="ChatList-profile-name">{conversations[0]?.name ?? ''}</span>
+                        }
                     </div>
                 </div>
                 <img src={editIcon} alt="edit icon" className="ChatList-compose" />
@@ -57,24 +85,38 @@ export default function ChatList() {
             </div>
 
             <div className="ChatList-conversations">
-                {conversations.map((conv) => (
-                    <div
-                        key={conv.id}
-                        className={`ChatList-item ${selectedId === conv.id ? "selected" : ""}`}
-                        onClick={() => setSelectedId(conv.id)}
-                    >
-                        <div className="ChatList-avatar" style={{ backgroundColor: conv.avatarColor }}>
-                            {conv.initial}
-                        </div>
-                        <div className="ChatList-item-content">
-                            <div className="ChatList-item-top">
-                                <span className="ChatList-item-name">{conv.name}</span>
-                                <span className="ChatList-item-time">{conv.time}</span>
+                {loading
+                    ? Array.from({ length: 9 }).map((_, i) => (
+                        <div key={i} className="ChatList-item">
+                            <Skeleton circle width={18} height={18} />
+                            <div className="ChatList-item-content">
+                                <div className="ChatList-item-top">
+                                    <Skeleton width={100} height={12} />
+                                    <Skeleton width={32} height={10} />
+                                </div>
+                                <Skeleton width="85%" height={11} style={{ marginTop: 4 }} />
                             </div>
-                            <p className="ChatList-item-preview">{conv.lastMessage}</p>
                         </div>
-                    </div>
-                ))}
+                    ))
+                    : conversations.map(conv => (
+                        <div
+                            key={conv.id}
+                            className={`ChatList-item ${selectedId === conv.id ? "selected" : ""}`}
+                            onClick={() => setSelectedId(conv.id)}
+                        >
+                            <div className="ChatList-avatar" style={{ backgroundColor: conv.avatarColor }}>
+                                {conv.initial}
+                            </div>
+                            <div className="ChatList-item-content">
+                                <div className="ChatList-item-top">
+                                    <span className="ChatList-item-name">{conv.name}</span>
+                                    <span className="ChatList-item-time">{conv.time}</span>
+                                </div>
+                                <p className="ChatList-item-preview">{conv.lastMessage}</p>
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
         </div>
     )
