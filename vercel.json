@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd BOXmap-Frontend && npm install && npm run build",
+  "outputDirectory": "BOXmap-Frontend/dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
