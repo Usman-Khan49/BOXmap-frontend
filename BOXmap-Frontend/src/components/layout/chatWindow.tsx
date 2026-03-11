@@ -28,13 +28,13 @@ function CheckmarkIcon() {
     )
 }
 
-export default function ChatWindow({ loadStep }: { loadStep: number }) {
+export default function ChatWindow({ unlockedSteps }: { unlockedSteps: Set<number> }) {
     const [messages, setMessages] = useState<Message[]>([])
     const [contactName, setContactName] = useState('')
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (loadStep < 3) return
+        if (!unlockedSteps.has(3)) return
         Promise.all([fetchComments(1, 8), fetchUsers()])
             .then(([comments, users]: [JPComment[], JPUser[]]) => {
                 setContactName(users[0]?.name ?? 'Contact')
@@ -49,7 +49,7 @@ export default function ChatWindow({ loadStep }: { loadStep: number }) {
             })
             .catch(() => {})
             .finally(() => setLoading(false))
-    }, [loadStep])
+    }, [unlockedSteps])
 
     return (
         <div className="ChatWindow-container">

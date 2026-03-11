@@ -22,13 +22,13 @@ const ENGLISH_PREVIEWS = [
     "Hey! Ready for the upcoming holiday sale?",
 ]
 
-export default function ChatList({ loadStep }: { loadStep: number }) {
+export default function ChatList({ unlockedSteps }: { unlockedSteps: Set<number> }) {
     const [selectedId, setSelectedId] = useState(1)
     const [conversations, setConversations] = useState<ConversationItem[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (loadStep < 2) return
+        if (!unlockedSteps.has(2)) return
         fetchUsers()
             .then((users: JPUser[]) => {
                 const mapped: ConversationItem[] = users.slice(0, 9).map((user, idx) => ({
@@ -43,7 +43,7 @@ export default function ChatList({ loadStep }: { loadStep: number }) {
             })
             .catch(() => {})
             .finally(() => setLoading(false))
-    }, [loadStep])
+    }, [unlockedSteps])
 
     return (
         <div className="ChatList-container">

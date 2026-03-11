@@ -17,14 +17,14 @@ import { InboxDashboard } from "./inbox-dashboard"
 // 5 = AI     → notes & labels
 
 export function LoadingScreen() {
-    const [loadStep, setLoadStep] = useState(0)
+    const [unlockedSteps, setUnlockedSteps] = useState<Set<number>>(new Set())
     const [activeHex, setActiveHex] = useState<number | null>(null)
 
     function handleHexClick(step: number, hexIdx: number) {
-        if (step <= loadStep) return
+        if (unlockedSteps.has(step)) return
         setActiveHex(hexIdx)
         setTimeout(() => setActiveHex(null), 600)
-        setLoadStep(step)
+        setUnlockedSteps(prev => new Set(prev).add(step))
     }
 
     return <>
@@ -53,7 +53,7 @@ export function LoadingScreen() {
                 </div>
             </div>
             <div className="placeholder">
-                <InboxDashboard loadStep={loadStep} />
+                <InboxDashboard unlockedSteps={unlockedSteps} />
             </div>
         </div>
     </>

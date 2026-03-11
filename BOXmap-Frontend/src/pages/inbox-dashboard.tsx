@@ -5,9 +5,9 @@ import ChatList from "../components/layout/chatList"
 import ChatWindow from "../components/layout/chatWindow"
 import DetailsPanel from "../components/layout/detailsPanel"
 
-type Props = { loadStep?: number }
+type Props = { unlockedSteps?: Set<number> }
 
-export function InboxDashboard({ loadStep = 0 }: Props)
+export function InboxDashboard({ unlockedSteps = new Set() }: Props)
 {
     return<>
         <div className="Inbox-wrapper">
@@ -15,17 +15,17 @@ export function InboxDashboard({ loadStep = 0 }: Props)
             <div className="Inbox-body">
                 <div className="Body-user">
                     <div className="Users-list">
-                        <InboxSidebar loadStep={loadStep} />
+                        <InboxSidebar unlockedSteps={unlockedSteps} />
                     </div>
                     <div className="Users-message">
-                        <ChatList loadStep={loadStep} />
+                        <ChatList unlockedSteps={unlockedSteps} />
                     </div>
                 </div>
                 <div className="Chat">
-                    <ChatWindow loadStep={loadStep} />
+                    <ChatWindow unlockedSteps={unlockedSteps} />
                 </div>
                 <div className="Chat-info">
-                    <DetailsPanel loadStep={loadStep} />
+                    <DetailsPanel unlockedSteps={unlockedSteps} />
                 </div>
             </div>
         </div>

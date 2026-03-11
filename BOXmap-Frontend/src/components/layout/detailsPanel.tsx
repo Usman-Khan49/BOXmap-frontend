@@ -5,7 +5,7 @@ import assignedUserIcon from "../../assets/assigned-user-icon.png"
 import { fetchUser } from "../../services/api/inbox"
 import type { JPUser } from "../../services/api/inbox"
 
-export default function DetailsPanel({ loadStep }: { loadStep: number }) {
+export default function DetailsPanel({ unlockedSteps }: { unlockedSteps: Set<number> }) {
     const [chatDataOpen, setChatDataOpen] = useState(true)
     const [contactDataOpen, setContactDataOpen] = useState(true)
     const [labelsOpen, setLabelsOpen] = useState(true)
@@ -15,12 +15,12 @@ export default function DetailsPanel({ loadStep }: { loadStep: number }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (loadStep < 4) return
+        if (!unlockedSteps.has(4)) return
         fetchUser(1)
             .then(data => setUser(data))
             .catch(() => {})
             .finally(() => setLoading(false))
-    }, [loadStep])
+    }, [unlockedSteps])
 
     const firstName = user?.name.split(' ')[0] ?? ''
     const lastName = user?.name.split(' ').slice(1).join(' ') ?? ''
@@ -118,7 +118,7 @@ export default function DetailsPanel({ loadStep }: { loadStep: number }) {
             </div>
 
             {/* Contact Labels Section */}
-            {loadStep >= 5 && <div className="Details-section">
+            {unlockedSteps.has(5) && <div className="Details-section">
                 <div className="Details-section-header" onClick={() => setLabelsOpen(!labelsOpen)}>
                     <span className="Details-section-title">Contact Labels</span>
                     <svg className={`Details-chevron ${labelsOpen ? "open" : ""}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -152,7 +152,7 @@ export default function DetailsPanel({ loadStep }: { loadStep: number }) {
             </div>}
 
             {/* Notes Section */}
-            {loadStep >= 5 && <div className="Details-section">
+            {unlockedSteps.has(5) && <div className="Details-section">
                 <div className="Details-section-header" onClick={() => setNotesOpen(!notesOpen)}>
                     <span className="Details-section-title">Notes</span>
                     <svg className={`Details-chevron ${notesOpen ? "open" : ""}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

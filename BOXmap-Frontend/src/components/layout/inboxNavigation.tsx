@@ -25,7 +25,7 @@ export default function InboxNav()
                     <img src={settingIcon} alt="setting icon" className="setting-icon" />
                     <div className="nav-profile">
                         <img src={profileIcon} alt="profile icon" className="profile-icon" />
-                        <p className="profile-name">Michael Johnson</p>
+                        <p className="profile-name">Leanne Graham</p>
                     </div>
                 </div>
         </div>

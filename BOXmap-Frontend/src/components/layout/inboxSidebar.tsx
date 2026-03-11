@@ -14,7 +14,7 @@ function getBadge(user: JPUser): number | undefined {
     return val <= 1 ? undefined : val
 }
 
-export default function InboxSidebar({ loadStep }: { loadStep: number }) {
+export default function InboxSidebar({ unlockedSteps }: { unlockedSteps: Set<number> }) {
     const [teamsOpen, setTeamsOpen] = useState(true)
     const [usersOpen, setUsersOpen] = useState(true)
     const [channelsOpen, setChannelsOpen] = useState(true)
@@ -23,7 +23,7 @@ export default function InboxSidebar({ loadStep }: { loadStep: number }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (loadStep < 1) return
+        if (!unlockedSteps.has(1)) return
         fetchUsers()
             .then(data => {
                 const sliced = data.slice(0, 9)
@@ -32,7 +32,7 @@ export default function InboxSidebar({ loadStep }: { loadStep: number }) {
             })
             .catch(() => {})
             .finally(() => setLoading(false))
-    }, [loadStep])
+    }, [unlockedSteps])
 
     return (
         <div className="Sidebar-container">
