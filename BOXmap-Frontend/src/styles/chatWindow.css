@@ -1,0 +1,200 @@
+.ChatWindow-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: var(--font-tertiary);
+}
+
+.ChatWindow-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.ChatWindow-contact-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0;
+}
+
+.ChatWindow-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ChatWindow-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 150ms;
+}
+.ChatWindow-action-btn:hover {
+    background: #F0F0F0;
+}
+
+.ChatWindow-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ChatWindow-messages::-webkit-scrollbar {
+    width: 4px;
+}
+.ChatWindow-messages::-webkit-scrollbar-thumb {
+    background: #D8DEE4;
+    border-radius: 4px;
+}
+
+.ChatWindow-date-pill {
+    align-self: center;
+    background: #F0EDE5;
+    color: #666;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+}
+
+.ChatWindow-msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 65%;
+    margin-bottom: 4px;
+}
+
+.ChatWindow-msg.customer {
+    align-self: flex-start;
+}
+
+.ChatWindow-msg.agent {
+    align-self: flex-end;
+    align-items: flex-end;
+}
+
+.ChatWindow-msg-bubble {
+    padding: 10px 14px;
+    border-radius: 14px;
+    line-height: 1.45;
+}
+
+.ChatWindow-msg.customer .ChatWindow-msg-bubble {
+    background: #F5ECD7;
+    border-bottom-left-radius: 4px;
+}
+
+.ChatWindow-msg.agent .ChatWindow-msg-bubble {
+    background: #E8DDF5;
+    border-bottom-right-radius: 4px;
+}
+
+.ChatWindow-msg-text {
+    margin: 0;
+    font-size: 13.5px;
+    color: #1A1A1A;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.ChatWindow-msg-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 3px;
+    padding: 0 4px;
+}
+
+.ChatWindow-msg.agent .ChatWindow-msg-meta {
+    flex-direction: row-reverse;
+}
+
+.ChatWindow-msg-time {
+    font-size: 11px;
+    color: #AAA;
+}
+
+.ChatWindow-input-area {
+    padding: 10px 20px 14px;
+    border-top: 1px solid #F0F0F0;
+}
+
+.ChatWindow-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #F8F8F8;
+    border: 1px solid #E8E8E8;
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+}
+
+.ChatWindow-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13.5px;
+    color: #333;
+    font-family: var(--font-tertiary);
+}
+.ChatWindow-input::placeholder {
+    color: #AAA;
+}
+
+.ChatWindow-input-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ChatWindow-send-btn,
+.ChatWindow-mic-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background 150ms;
+}
+.ChatWindow-send-btn:hover,
+.ChatWindow-mic-btn:hover {
+    background: #EEEEEE;
+}
+
+.ChatWindow-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.ChatWindow-toolbar-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background 150ms;
+}
+.ChatWindow-toolbar-btn:hover {
+    background: #F0F0F0;
+}

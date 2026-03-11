@@ -1,0 +1,135 @@
+.Sidebar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px 12px;
+    font-family: var(--font-tertiary);
+    overflow-y: auto;
+}
+
+.Sidebar-container::-webkit-scrollbar {
+    width: 4px;
+}
+.Sidebar-container::-webkit-scrollbar-thumb {
+    background: #D8DEE4;
+    border-radius: 4px;
+}
+
+.Sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.Sidebar-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Sidebar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0;
+    font-family: var(--font-tertiary);
+}
+
+.Sidebar-compose {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 150ms;
+}
+.Sidebar-compose:hover {
+    opacity: 1;
+}
+
+.Sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 12px;
+}
+
+.Sidebar-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 150ms;
+    font-size: 13px;
+    color: #333;
+}
+
+.Sidebar-menu-item:hover {
+    background-color: #F5F5F5;
+}
+
+.Sidebar-menu-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Sidebar-badge {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+    min-width: 18px;
+    text-align: center;
+}
+
+.Sidebar-section {
+    margin-bottom: 6px;
+}
+
+.Sidebar-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Sidebar-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.Sidebar-chevron {
+    transition: transform 200ms ease;
+    transform: rotate(0deg);
+}
+.Sidebar-chevron.open {
+    transform: rotate(90deg);
+}
+
+.Sidebar-section-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.Sidebar-user-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #CCC;
+    flex-shrink: 0;
+}
+
+.Sidebar-user-item.active {
+    background-color: #E3F2FD;
+    border-radius: 8px;
+}
+
+.Sidebar-user-item.active .Sidebar-user-dot {
+    background-color: #007AEC;
+}
